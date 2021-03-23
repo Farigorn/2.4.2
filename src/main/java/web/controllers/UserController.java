@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.services.UserService;
-import web.services.UserServiceImp;
 
 @Controller
 public class UserController {
@@ -14,8 +13,8 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceImp userServiceImp) {
-        this.userService = userServiceImp;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping(value = "/")
