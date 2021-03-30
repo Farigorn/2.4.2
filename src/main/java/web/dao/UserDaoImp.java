@@ -22,8 +22,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User getUser(long id) {
-        User user = entityManager.find(User.class, id);
-        return user;
+        return entityManager.find(User.class, id);
     }
 
     @Override
@@ -33,13 +32,20 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void saveUser(String name, String lastName, String email) {
-        entityManager.persist(new User(name, lastName, email));
+    public void saveUser(User user) {
+        entityManager.persist(user);
     }
 
     @Override
     public User updateUser(User user) {
         entityManager.merge(user);
-        return  user;
+        return user;
+    }
+
+    @Override
+    public User findByUserName(String UserName) {
+        return entityManager.createQuery(
+                "SELECT u from User u WHERE u.name = :username", User.class).
+                setParameter("username", UserName).getSingleResult();
     }
 }

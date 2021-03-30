@@ -1,13 +1,14 @@
 package web.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import web.dao.UserDao;
 import web.model.User;
 
 import java.util.List;
 
-@Component
+@Service
 public class UserServiceImp implements UserService {
 
     @Autowired
@@ -29,12 +30,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void saveUser(String name, String lastName, String email) {
-        userDao.saveUser(name, lastName, email);
+    public void saveUser(User user) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userDao.saveUser(user);
     }
 
     @Override
     public User updateUser(User user) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDao.updateUser(user);
+    }
+
+    @Override
+    public User findByUserName(String name) {
+        return userDao.findByUserName(name);
     }
 }

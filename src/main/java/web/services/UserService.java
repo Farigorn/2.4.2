@@ -1,8 +1,10 @@
 package web.services;
 
+import web.model.Role;
 import web.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     List<User> getAllUsers();
@@ -11,7 +13,9 @@ public interface UserService {
 
     void deleteUser(long id);
 
-    void saveUser(String name, String lastName, String email);
+    void saveUser(User user);
 
     User updateUser(User user);
+
+    User findByUserName(String name);
 }
