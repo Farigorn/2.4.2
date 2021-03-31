@@ -4,13 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.model.Role;
 import web.model.User;
 import web.services.RoleService;
 import web.services.UserService;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -39,14 +35,7 @@ public class AdminController {
 
     @PostMapping()
     public String addUser(@RequestParam String name, @RequestParam String lastName, @RequestParam String email, @RequestParam String password, @RequestParam("roleId") Long roleId) {
-        Set<Role> roles = new HashSet<>();
-        User user = new User(name, lastName, email, password);
-        roles.add(roleService.getRole(1));
-        if (roleId == 2) {
-            roles.add(roleService.getRole(2));
-        }
-        user.setRoles(roles);
-        userService.saveUser(user);
+        userService.saveUser(name, lastName, email, password, roleId);
         return "redirect:/admin";
     }
 
@@ -59,13 +48,7 @@ public class AdminController {
 
     @PatchMapping("{id}/{id}")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("roleId") Long roleId) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getRole(1));
-        if (roleId == 2) {
-            roles.add(roleService.getRole(2));
-        }
-        user.setRoles(roles);
-        userService.updateUser(user);
+        userService.updateUser(user, roleId);
         return "redirect:/admin";
     }
 
